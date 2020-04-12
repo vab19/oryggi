@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='utf-8'?>
+<interface>
+  <object class="tk.Frame" id="mainwindow">
+    <property name="height">200</property>
+    <property name="width">200</property>
+    <layout>
+      <property name="column">0</property>
+      <property name="propagate">True</property>
+      <property name="row">0</property>
+    </layout>
+    <child>
+      <object class="tk.Button" id="getpwd">
+        <property name="command">on_pwd_clicked</property>
+        <property name="compound">top</property>
+        <property name="font">TkDefaultFont</property>
+        <property name="padx">35</property>
+        <property name="state">normal</property>
+        <property name="takefocus">false</property>
+        <property name="text" translatable="yes">Get PWD</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="ipadx">7</property>
+          <property name="propagate">True</property>
+          <property name="row">1</property>
+          <property name="sticky">w</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Button" id="getwhoami">
+        <property name="command">on_whoami_clicked</property>
+        <property name="text" translatable="yes">Get WHOAMI</property>
+        <property name="width">9</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="ipadx">24</property>
+          <property name="propagate">True</property>
+          <property name="row">2</property>
+          <property name="sticky">w</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Button" id="gethostname">
+        <property name="command">on_host_clicked</property>
+        <property name="text" translatable="yes">Get Hostname</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="ipadx">14</property>
+          <property name="propagate">True</property>
+          <property name="row">3</property>
+          <property name="sticky">w</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Button" id="scannetwork">
+        <property name="justify">left</property>
+        <property name="takefocus">false</property>
+        <property name="text" translatable="yes">Scan Network</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="ipadx">14</property>
+          <property name="propagate">True</property>
+          <property name="row">4</property>
+          <property name="sticky">w</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Button" id="startlistening">
+        <property name="command">on_start_listen</property>
+        <property name="text" translatable="yes">Start Listening</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="ipadx">3</property>
+          <property name="propagate">True</property>
+          <property name="row">5</property>
+          <property name="sticky">w</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Button" id="closeconnection">
+        <property name="text" translatable="yes">Close Connection</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="propagate">True</property>
+          <property name="row">6</property>
+          <property name="sticky">w</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Button" id="loadclient">
+        <property name="command">on_load_client</property>
+        <property name="text" translatable="yes">Load selected client</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="propagate">True</property>
+          <property name="row">7</property>
+          <property name="sticky">w</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Listbox" id="clientslistbox">
+        <property name="listvariable">string:clientslistvar</property>
+        <property name="selectmode">single</property>
+        <property name="takefocus">true</property>
+        <property name="width">70</property>
+        <layout>
+          <property name="column">1</property>
+          <property name="columnspan">2</property>
+          <property name="propagate">True</property>
+          <property name="row">1</property>
+          <property name="rowspan">5</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Text" id="textboxoutput">
+        <property name="height">10</property>
+        <property name="setgrid">true</property>
+        <property name="state">normal</property>
+        <property name="text" translatable="yes">Select client from the list.</property>
+        <property name="width">100</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="columnspan">3</property>
+          <property name="propagate">True</property>
+          <property name="row">9</property>
+          <property name="sticky">w</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Label" id="sendcommand">
+        <property name="font">TkDefaultFont</property>
+        <property name="text" translatable="yes">Send Command</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="propagate">True</property>
+          <property name="row">0</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Label" id="onlineclients">
+        <property name="text" translatable="yes">Online Clients</property>
+        <layout>
+          <property name="column">1</property>
+          <property name="propagate">True</property>
+          <property name="row">0</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Label" id="lblclientsel">
+        <property name="text" translatable="yes">Selected:</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="pady">10</property>
+          <property name="propagate">True</property>
+          <property name="row">8</property>
+          <property name="sticky">se</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Label" id="selectedClient">
+        <property name="text" translatable="yes">None</property>
+        <layout>
+          <property name="column">1</property>
+          <property name="propagate">True</property>
+          <property name="row">8</property>
+          <property name="sticky">w</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Label" id="lbllistening">
+        <property name="text" translatable="yes">Starting Botnet listener...</property>
+        <layout>
+          <property name="column">2</property>
+          <property name="propagate">True</property>
+          <property name="row">7</property>
+        </layout>
+      </object>
+    </child>
+  </object>
+</interface>
