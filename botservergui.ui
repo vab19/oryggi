@@ -55,6 +55,7 @@
     </child>
     <child>
       <object class="tk.Button" id="scannetwork">
+        <property name="command">on_scanNetwork_clicked</property>
         <property name="justify">left</property>
         <property name="takefocus">false</property>
         <property name="text" translatable="yes">Scan Network</property>
