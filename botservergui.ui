@@ -54,16 +54,32 @@
       </object>
     </child>
     <child>
-      <object class="tk.Button" id="scannetwork">
-        <property name="command">on_scanNetwork_clicked</property>
+      <object class="tk.Button" id="listfiles">
+        <property name="command">on_listFiles_clicked</property>
         <property name="justify">left</property>
         <property name="takefocus">false</property>
-        <property name="text" translatable="yes">Scan Network</property>
+        <property name="text" translatable="yes">List Files</property>
         <layout>
           <property name="column">0</property>
           <property name="ipadx">14</property>
           <property name="propagate">True</property>
           <property name="row">4</property>
+          <property name="sticky">w</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Text" id="insertPath">
+        <property name="height">1</property>
+        <property name="setgrid">true</property>
+        <property name="state">normal</property>
+        
+        <property name="width">30</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="columnspan">1</property>
+          <property name="propagate">True</property>
+          <property name="row">8</property>
           <property name="sticky">w</property>
         </layout>
       </object>
@@ -76,30 +92,21 @@
           <property name="column">0</property>
           <property name="ipadx">3</property>
           <property name="propagate">True</property>
-          <property name="row">5</property>
+          <property name="row">12</property>
           <property name="sticky">w</property>
         </layout>
       </object>
     </child>
+  
+   
     <child>
-      <object class="tk.Button" id="closeconnection">
-        <property name="text" translatable="yes">Close Connection</property>
+    <object class="tk.Button" id="refreshClients">
+        <property name="command">on_refreshClient_client</property>
+        <property name="text" translatable="yes">Refresh clients</property>
         <layout>
-          <property name="column">0</property>
+          <property name="column">2</property>
           <property name="propagate">True</property>
-          <property name="row">6</property>
-          <property name="sticky">w</property>
-        </layout>
-      </object>
-    </child>
-    <child>
-      <object class="tk.Button" id="loadclient">
-        <property name="command">on_load_client</property>
-        <property name="text" translatable="yes">Load selected client</property>
-        <layout>
-          <property name="column">0</property>
-          <property name="propagate">True</property>
-          <property name="row">7</property>
+          <property name="row">8</property>
           <property name="sticky">w</property>
         </layout>
       </object>
@@ -124,7 +131,7 @@
         <property name="height">10</property>
         <property name="setgrid">true</property>
         <property name="state">normal</property>
-        <property name="text" translatable="yes">Select client from the list.</property>
+        <property name="text" translatable="yes">Active clients are displayed on the list to the right, you might have to refresh.</property>
         <property name="width">100</property>
         <layout>
           <property name="column">0</property>
@@ -135,17 +142,7 @@
         </layout>
       </object>
     </child>
-    <child>
-      <object class="tk.Label" id="sendcommand">
-        <property name="font">TkDefaultFont</property>
-        <property name="text" translatable="yes">Send Command</property>
-        <layout>
-          <property name="column">0</property>
-          <property name="propagate">True</property>
-          <property name="row">0</property>
-        </layout>
-      </object>
-    </child>
+    
     <child>
       <object class="tk.Label" id="onlineclients">
         <property name="text" translatable="yes">Online Clients</property>
@@ -157,28 +154,18 @@
       </object>
     </child>
     <child>
-      <object class="tk.Label" id="lblclientsel">
-        <property name="text" translatable="yes">Selected:</property>
+      <object class="tk.Label" id="commandLabel">
+        <property name="text" translatable="yes"> Insert remote command</property>
         <layout>
           <property name="column">0</property>
-          <property name="pady">10</property>
           <property name="propagate">True</property>
           <property name="row">8</property>
-          <property name="sticky">se</property>
         </layout>
       </object>
     </child>
-    <child>
-      <object class="tk.Label" id="selectedClient">
-        <property name="text" translatable="yes">None</property>
-        <layout>
-          <property name="column">1</property>
-          <property name="propagate">True</property>
-          <property name="row">8</property>
-          <property name="sticky">w</property>
-        </layout>
-      </object>
-    </child>
+   
+    
+    
     <child>
       <object class="tk.Label" id="lbllistening">
         <property name="text" translatable="yes">Starting Botnet listener...</property>
